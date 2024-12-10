@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ReactQueryProvider from "@/utils/providers/ReactQueryProvider";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -28,7 +29,30 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        {/* Main Layout Container */}
+        <div className="flex flex-col">
+
+          {/* Top Navigation */}
+          <header className="text-white shadow-md">
+            <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+              <h1 className="text-2xl font-bold font-[family-name:var(--font-geist-mono)]">Github Explorer</h1>
+              <nav>
+                <ul className="flex space-x-6">
+                  <li><a href="/" className="hover:text-gray-300">Home</a></li>
+                </ul>
+              </nav>
+            </div>
+          </header>
+
+          {/* Main Content Area */}
+          <ReactQueryProvider>
+            <main className="flex-1 p-6">
+              {/* Children Content */}
+              {children}
+            </main>
+          </ReactQueryProvider>
+
+        </div>
       </body>
     </html>
   );

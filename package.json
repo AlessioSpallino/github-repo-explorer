@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@octokit/rest": "^21.0.2",
+    "@tanstack/react-query": "^5.62.3",
+    "@tanstack/react-table": "^8.20.5",
     "next": "15.0.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

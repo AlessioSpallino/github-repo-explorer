@@ -6,12 +6,12 @@ import { SearchType } from '@/types';
 interface SearchFormProps {
     onSearch: (searchTerm: string, searchType: SearchType) => void;
     searchType: SearchType;
+    isLoading: boolean;
 }
 
-const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
+const SearchForm: React.FC<SearchFormProps> = ({ onSearch, isLoading }) => {
     const [inputValue, setInputValue] = useState('');
     const [searchType, setSearchType] = useState<SearchType>('user');
-    const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
     // Handle the input value change
@@ -34,14 +34,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
             return;
         }
 
-        setIsSubmitting(true);
-        try {
-            await onSearch(inputValue, searchType);
-        } catch (error) {
-            setErrorMessage('An error occurred during the search.');
-        } finally {
-            setIsSubmitting(false);
-        }
+        onSearch(inputValue, searchType);
     };
 
     return (
@@ -84,13 +77,13 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
             <div className="flex justify-center">
                 <button
                     type="submit"
-                    disabled={isSubmitting}
+                    disabled={isLoading}
                     className={`w-full bg-blue-500 text-white p-3 rounded-md transition-colors duration-200 ease-in-out hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 ${
-                        isSubmitting ? 'bg-gray-400 cursor-not-allowed' : ''
+                        isLoading ? 'bg-gray-400 cursor-not-allowed' : ''
                     }`}
-                    style={{ maxWidth: '200px', height: '50px' }} // Fixed height to prevent resizing
+                    style={{ maxWidth: '200px', height: '50px' }}
                 >
-                    {isSubmitting ? 'Searching...' : 'Search'}
+                    {isLoading ? 'Searching...' : 'Search'}
                 </button>
             </div>
         </form>

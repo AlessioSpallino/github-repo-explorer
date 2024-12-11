@@ -38,7 +38,7 @@ export default function RootLayout({
               <h1 className="text-2xl font-bold font-[family-name:var(--font-geist-mono)]">Github Explorer</h1>
               <nav>
                 <ul className="flex space-x-6">
-                  <li><a href="/" className="hover:text-gray-300">Home</a></li>
+                  <li><a href="/" className="hover:text-gray-300">Search</a></li>
                 </ul>
               </nav>
             </div>

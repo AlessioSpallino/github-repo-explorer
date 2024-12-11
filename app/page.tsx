@@ -3,47 +3,35 @@ import { useState } from 'react';
 import Image from "next/image";
 import { useQuery } from '@tanstack/react-query';
 import { fetchRepos } from '@/lib/github/github-api';
-import RepoList from '@/components/RepoList';
+import Table from '@/components/react-table/Table';
 import SearchForm from '@/components/SearchForm';
-import { GitHubApiOutput, Sort, Direction } from '@/types';
+import { Repo, SearchType } from '@/types';
 import { getErrorMessage } from '@/utils/errorUtils';
+import Footer from '@/components/Footer';
+
+import { columns } from '@/components/react-table/RepoTableColumns';
 
 export default function Home() {
   const [searchInput, setSearchInput] = useState<string>('');
-  const [searchType, setSearchType] = useState<'user' | 'org'>('user');
-  const [sort, setSort] = useState<Sort>('stars'); // Default sort can be adjusted
-  const [direction, setDirection] = useState<Direction>('asc'); // Default direction can be adjusted
-  const [currentPage, setCurrentPage] = useState(1);
-  const perPage = 5;
+  const [searchType, setSearchType] = useState<SearchType>('user');
 
   // Use the query hook to fetch repositories
-  const { data, isError, isLoading, isFetching } = useQuery<GitHubApiOutput>({
+  const { data, isError, isLoading, /* isFetching */ } = useQuery<Repo[]>({
     queryFn: () => fetchRepos({
       user: searchType === 'user' ? searchInput : undefined,
       org: searchType === 'org' ? searchInput : undefined,
-      page: currentPage,
-      perPage,
-      sort,
-      direction,
-      q: '' // You can pass a query string here if needed
     }),
-    queryKey: ['data', searchInput, searchType, currentPage, sort, direction],
+    queryKey: ['data', searchInput, searchType],
     enabled: !!searchInput,
   });
 
-  const handleSearch = (input: string, type: 'user' | 'org') => {
+  const handleSearch = (input: string, type: SearchType) => {
     setSearchInput(input);
     setSearchType(type);
-    setCurrentPage(1); // Reset to first page on new search
-  };
-
-  const handleSortChange = (newSort: Sort, newDirection: Direction) => {
-    setSort(newSort);
-    setDirection(newDirection);
   };
 
   return (
-    <div className="flex flex-col justify-between p-8 ">
+    <div className="flex flex-col justify-between p-8 font-[family-name:var(--font-geist-mono)]">
       <Image
         className="mx-auto"
         src={isLoading ? "/daftpunk.gif" : "/daftpunk.png"}
@@ -55,22 +43,18 @@ export default function Home() {
       <main className="flex flex-col gap-8 items-center min-h-screen justify-start">
         <SearchForm onSearch={handleSearch} searchType={searchType} />
         {isError && <p className="text-red-500">{getErrorMessage(isError)}</p>}
-        {data && data.repos.length > 0 ? (
-          <div className="w-full max-w-4xl"> {/* Responsive width container */}
-            <RepoList
-              repos={data.repos}
-              links={data.links}
-              onPageChange={setCurrentPage}
-              currentPage={currentPage}
-              onSortChange={handleSortChange}
-              sort={sort}
-              direction={direction}
+        {data && data.length > 0 ? (
+          <div className="w-full max-w-4xl">
+            <Table
+              repos={data}
+              defaultColumns={columns}
             />
           </div>
         ) : (
           <p>No repositories found.</p>
         )}
       </main>
+      <Footer/>
     </div>
   );
 }

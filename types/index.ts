@@ -1,20 +1,18 @@
+import { RestEndpointMethodTypes } from '@octokit/rest'; // Importing types from Octokit
+
+type RepoResponseOwnerItem = RestEndpointMethodTypes['search']['repos']['response']['data']['items'][number]['owner'];
 export interface Repo {
     id: number;
     name: string;
+    owner: RepoResponseOwnerItem;
     html_url: string;
     description: string | null;
     stargazers_count?: number;
 }
 
-// prev, next, last, first
-export interface Links {
-    [key: string]: string | undefined;
-}
-
-export type GitHubApiOutput = {
-    repos: Repo[]; // Assuming Repo is already defined
-    links: Links;   // Assuming Links is already defined
+export type FetchReposParams = {
+    user?: string;
+    org?: string;
 };
 
-export type Sort = "stars" | "forks" | "updated" | "help-wanted-issues";
-export type Direction = "asc" | "desc"
+export type SearchType = 'user' | 'org';

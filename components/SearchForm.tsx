@@ -1,15 +1,16 @@
 'use client';
 
 import { useState } from 'react';
+import { SearchType } from '@/types';
 
 interface SearchFormProps {
-    onSearch: (searchTerm: string, searchType: 'user' | 'org') => void;
-    searchType: 'user' | 'org';
+    onSearch: (searchTerm: string, searchType: SearchType) => void;
+    searchType: SearchType;
 }
 
 const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
     const [inputValue, setInputValue] = useState('');
-    const [searchType, setSearchType] = useState<'user' | 'org'>('user');
+    const [searchType, setSearchType] = useState<SearchType>('user');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -21,7 +22,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
 
     // Handle the search type change (username or organization)
     const handleSearchTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSearchType(event.target.value as 'user' | 'org');
+        setSearchType(event.target.value as SearchType);
     };
 
     // Handle form submission
@@ -45,7 +46,6 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
 
     return (
         <form onSubmit={handleSubmit} className="max-w-xl mx-auto flex flex-col gap-6 w-full">
-            {/* Search Type and Input Wrapper */}
             <div className="flex flex-col md:flex-row gap-6 w-full">
                 {/* Search Type */}
                 <div className="flex items-center md:w-2/4">

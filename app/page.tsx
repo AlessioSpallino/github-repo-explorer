@@ -2,11 +2,10 @@
 import { useState } from 'react';
 import Image from "next/image";
 import { useQuery } from '@tanstack/react-query';
-import { fetchRepos } from '@/lib/github/github-api';
+import { fetchRepos } from '@/api/github/github-api';
 import Table from '@/components/react-table/Table';
 import SearchForm from '@/components/SearchForm';
 import { Repo, SearchType } from '@/types';
-import { getErrorMessage } from '@/utils/errorUtils';
 import Footer from '@/components/Footer';
 
 import { columns } from '@/components/react-table/RepoTableColumns';
@@ -16,7 +15,7 @@ export default function Home() {
   const [searchType, setSearchType] = useState<SearchType>('user');
 
   // Use the query hook to fetch repositories
-  const { data, isError, isLoading, /* isFetching */ } = useQuery<Repo[]>({
+  const { data, isError, isLoading, error } = useQuery<Repo[]>({
     queryFn: () => fetchRepos({
       user: searchType === 'user' ? searchInput : undefined,
       org: searchType === 'org' ? searchInput : undefined,
@@ -41,17 +40,21 @@ export default function Home() {
         priority
       />
       <main className="flex flex-col gap-8 items-center min-h-screen justify-start">
-        <SearchForm onSearch={handleSearch} searchType={searchType} />
-        {isError && <p className="text-red-500">{getErrorMessage(isError)}</p>}
-        {data && data.length > 0 ? (
+        <SearchForm onSearch={handleSearch} searchType={searchType} isLoading={isLoading} />
+        
+        {isError && (
+          <p className="text-red-500">
+            {error instanceof Error ? error.message : 'An error occurred.'}
+          </p>
+        )}
+        
+        {data && data.length > 0 && (
           <div className="w-full max-w-4xl">
             <Table
               repos={data}
-              defaultColumns={columns}
+              columns={columns}
             />
           </div>
-        ) : (
-          <p>No repositories found.</p>
         )}
       </main>
       <Footer/>

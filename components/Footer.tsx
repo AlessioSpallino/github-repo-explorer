@@ -17,7 +17,7 @@ const Footer = () => {
                     width={16}
                     height={16}
                 />
-                Go to Alessio Spallino's LinkedIn profile →
+                Go to Alessio Spallino&apos;s LinkedIn profile &rarr;
             </a>
         </footer>
     );

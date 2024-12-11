@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 import ReactQueryProvider from "@/utils/providers/ReactQueryProvider";
 import localFont from "next/font/local";
@@ -26,28 +27,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {/* Main Layout Container */}
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <div className="flex flex-col">
 
-          {/* Top Navigation */}
           <header className="text-white shadow-md">
             <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
               <h1 className="text-2xl font-bold font-[family-name:var(--font-geist-mono)]">Github Explorer</h1>
               <nav>
                 <ul className="flex space-x-6">
-                  <li><a href="/" className="hover:text-gray-300">Search</a></li>
+                  <li>
+                    <Link href="/" className="hover:text-gray-300">Search</Link>
+                  </li>
                 </ul>
               </nav>
             </div>
           </header>
 
-          {/* Main Content Area */}
           <ReactQueryProvider>
             <main className="flex-1 p-6">
-              {/* Children Content */}
               {children}
             </main>
           </ReactQueryProvider>

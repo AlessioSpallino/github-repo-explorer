@@ -29,7 +29,7 @@ export const fetchRepos = async ({
 
         const repos: Repo[] = response.data.items.map((item: any) => ({
             id: item.id,
-            name: item.name,
+            name: item.full_name,
             owner: {
                 avatar_url: item.owner.avatar_url,
             },

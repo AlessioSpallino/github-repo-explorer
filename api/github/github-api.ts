@@ -27,7 +27,18 @@ export const fetchRepos = async ({
 
         const response = await octokit.rest.search.repos({ q: searchQuery });
 
-        return response.data.items;
+        const repos: Repo[] = response.data.items.map((item: any) => ({
+            id: item.id,
+            name: item.name,
+            owner: {
+                avatar_url: item.owner.avatar_url,
+            },
+            html_url: item.html_url,
+            description: item.description,
+            stargazers_count: item.stargazers_count,
+        }));
+
+        return repos;
     } catch (error: any) {
         // Handle specific GitHub API errors
         const errorMessage = handleApiError(error);

@@ -3,12 +3,12 @@ import { useState } from 'react';
 import Image from "next/image";
 import { useQuery } from '@tanstack/react-query';
 import { fetchRepos } from '@/api/github/github-api';
-import Table from '@/components/react-table/Table';
+import Table from '@/components/Table/Table';
 import SearchForm from '@/components/SearchForm';
 import { Repo, SearchType } from '@/types';
 import Footer from '@/components/Footer';
 
-import { columns } from '@/components/react-table/RepoTableColumns';
+import { columns } from '@/components/Table/RepoTableColumns';
 
 export default function Home() {
   const [searchInput, setSearchInput] = useState<string>('');

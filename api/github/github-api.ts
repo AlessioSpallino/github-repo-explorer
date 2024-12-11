@@ -26,7 +26,6 @@ export const fetchRepos = async ({
         console.log('Search Query:', searchQuery);
 
         const response = await octokit.rest.search.repos({ q: searchQuery });
-
         const repos: Repo[] = response.data.items.map((item: any) => ({
             id: item.id,
             name: item.full_name,

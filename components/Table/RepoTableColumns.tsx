@@ -66,7 +66,7 @@ export const columns: GridColDef[] = [
         ),
     },
     {
-        field: 'full_name',
+        field: 'name',
         headerName: 'Name',
         width: 250
     },

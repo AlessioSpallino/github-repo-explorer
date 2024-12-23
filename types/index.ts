@@ -9,6 +9,7 @@ export interface Repo {
     html_url: string;
     description: string | null;
     stargazers_count?: number;
+    favorite? : boolean;
 }
 
 export type FetchReposParams = {

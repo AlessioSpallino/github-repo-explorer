@@ -48,7 +48,7 @@ const DescriptionCell = ({ description }: DescriptionCellProps) => {
     );
 };
 
-export const columns: GridColDef[] = [
+export const columns = (toggleFavorite: (repoId: number) => void): GridColDef[] => [
     {
         field: 'avatar',
         headerName: 'Avatar',
@@ -83,6 +83,23 @@ export const columns: GridColDef[] = [
         headerName: 'Stars',
         type: 'number',
         width: 100
+    },
+    {
+        field: 'star',
+        headerName: 'Star',
+        width: 100,
+        sortable: false,
+        filterable: false,
+        renderCell: (params) => (
+            <div
+                style={{
+                    cursor: 'pointer',
+                }}
+                onClick={() => toggleFavorite(params.row.id)} // Assuming `id` is the unique identifier for the repo
+            >
+                {params.row.favorite ? '⭐' : '☆'}
+            </div>
+        ),
     },
     {
         field: 'html_url',
